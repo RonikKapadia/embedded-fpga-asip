@@ -236,11 +236,41 @@ The framebuffer is a 4096-entry memory, addressed as `row + col*64`.
 4. **Open in Vivado**
    - Create a new project targeting your FPGA board
    - Add all `.vhd` files from the `src/` directory
+   - Add [`constraints.xdc`](src/constraints.xdc)
    - Set `top.vhd` as the top-level entity
 
 5. **Configure Pin Assignments**
-   - Assign pins according to your board's VGA and UART pinout
-   - Set correct clock constraints for 100 MHz input
+   The included [`constraints.xdc`](src/constraints.xdc) already maps pins for the **Digilent Zybo Z7**:
+
+   | Signal | Pin | I/O Standard |
+   |--------|-----|--------------|
+   | `clk` | L16 | LVCMOS33 |
+   | `btn` | R18 | LVCMOS33 |
+   | `RXD` | K16 | LVCMOS33 (PMOD JA) |
+   | `TXD` | L14 | LVCMOS33 (PMOD JA) |
+   | `RTS` | N15 | LVCMOS33 (PMOD JA) |
+   | `CTS` | K14 | LVCMOS33 (PMOD JA) |
+   | `vga_r[0]` | M19 | LVCMOS33 |
+   | `vga_r[1]` | L20 | LVCMOS33 |
+   | `vga_r[2]` | J20 | LVCMOS33 |
+   | `vga_r[3]` | G20 | LVCMOS33 |
+   | `vga_r[4]` | F19 | LVCMOS33 |
+   | `vga_g[0]` | H18 | LVCMOS33 |
+   | `vga_g[1]` | N20 | LVCMOS33 |
+   | `vga_g[2]` | L19 | LVCMOS33 |
+   | `vga_g[3]` | J19 | LVCMOS33 |
+   | `vga_g[4]` | H20 | LVCMOS33 |
+   | `vga_g[5]` | F20 | LVCMOS33 |
+   | `vga_b[0]` | P20 | LVCMOS33 |
+   | `vga_b[1]` | M20 | LVCMOS33 |
+   | `vga_b[2]` | K19 | LVCMOS33 |
+   | `vga_b[3]` | J18 | LVCMOS33 |
+   | `vga_b[4]` | G19 | LVCMOS33 |
+   | `vga_hs` | P19 | LVCMOS33 |
+   | `vga_vs` | R19 | LVCMOS33 |
+
+   - Clock constraint is set to **125 MHz** (`-period 8.00`)
+   - Adjust the constraint file if using a different board
 
 6. **Compile & Program**
    - Run Synthesis
@@ -290,6 +320,7 @@ embedded-fpga-asip/
 │   ├── clock_div_cpu.vhd       # CPU clock divider
 │   ├── clock_div_vga.vhd       # VGA clock divider
 │   ├── debounce.vhd            # Button debouncer
+│   ├── constraints.xdc         # Zybo Z7 pin constraints
 │   ├── assembler.py            # Python assembler
 │   ├── simulator.py            # Python simulator + debugger
 │   ├── make.bat                # Build script
